@@ -44,14 +44,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=20, blank=False)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, blank=False)
     availability = models.IntegerField(default=0)
-    address = models.CharField(max_length=200, blank=False)
+    medical_folder = models.FileField(upload_to='medical_folders/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    position = models.DecimalField(max_digits=30, decimal_places=30, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'role', 'phone_number', 'gender', 'address']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'role', 'phone_number', 'gender', 'position']
 
     objects = UserManager()
 
@@ -89,3 +88,12 @@ class Report(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CareMissino(models.Model):
+    driver = models.ForeignKey('User', on_delete=models.CASCADE, related_name='care_missions', limit_choices_to={'role': 'driver'})
+    appointment_time = models.DateTimeField()
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.patient.email} - Care Mission"
