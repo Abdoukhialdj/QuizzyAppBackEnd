@@ -27,9 +27,10 @@ SECRET_KEY = 'django-insecure-^bcouw5cabnsv*0_k5o!t(o4hquhi2=0ivzd6r3b8nyt)Mysr4
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# -----------------
+AUTH_USER_MODEL = 'clinic.User'
 
-AUTH_USER_MODEL = 'quizzy.UserProfile'
-
+# -----------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -44,10 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'rest_framework',
-    'quizzy.apps.QuizzyConfig',
     'djoser',
     'social_django',
+    'clinic.apps.ClinicConfig',
 
 
 
@@ -59,7 +61,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
 
 ]
-
+# --------------
+CROS_ORIGIN_ALLOW_ALL = True
+CRORS_ALLOW_CREDENTIALS = True
+# ----------------
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -107,6 +112,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+
     }
 }
 
@@ -153,21 +159,22 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configure djoser
-DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
-    'PERMISSIONS': {
-        'user_create': ['rest_framework.permissions.AllowAny'],
-        'user_delete': ['rest_framework.permissions.IsAdminUser'],
-        'user': ['rest_framework.permissions.IsAuthenticated'],
-    },
-}
+# DJOSER = {
+#     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+#     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+#     'ACTIVATION_URL': '#/activate/{uid}/{token}',
+#     'SEND_ACTIVATION_EMAIL': True,
+#        'SERIALIZERS': {
+#         # 'user': 'C:/Users/AlaDin/Desktop/Quizzy/djangoQuizzy/quizzy/serializers.py',
+#     },
+#     'PERMISSIONS': {
+#         'user_create': ['rest_framework.permissions.AllowAny'],
+#         'user_delete': ['rest_framework.permissions.IsAdminUser'],
+#         'user': ['rest_framework.permissions.IsAuthenticated'],
+#     },
+# }
 
 AUTHENTICATION_BACKENDS = [
-    'social_core.backends.open_id.OpenIdAuth',
     # 'social_core.backends.google.GoogleOpenId',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.google.GoogleOAuth',
@@ -175,6 +182,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.linkedin.LinkedinOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+
+
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'your-google-app-id'
@@ -188,3 +197,13 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = 'your-linkedin-app-id'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'your-linkedin-app-secret'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_emailaddress', 'r_liteprofile']
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+
+    ]
+}

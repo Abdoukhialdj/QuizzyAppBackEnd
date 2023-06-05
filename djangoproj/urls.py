@@ -6,12 +6,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('quizzy.urls')),
+    path('',include('clinic.urls')),
     # path('', include('authentication.urls')),
-    path('api/auth/', include('djoser.urls')),
-    path('api/auth/', include('djoser.urls.authtoken')),
-    path('api/auth/jwt', include('djoser.urls.jwt')),
-    path('social-auth/', include('social_django.urls')),
+    # path('api/auth/', include('djoser.urls')),
+    # path('api/auth/', include('djoser.urls.authtoken')),
+    # path('api/auth/jwt', include('djoser.urls.jwt')),
+    # path('social-auth/', include('social_django.urls')),
     # (/api/auth/token/login/) to login
     # (/api/auth/token/logout/) to logout
     # /api/auth/password/reset/ to reset password
